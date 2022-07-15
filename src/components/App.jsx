@@ -34,7 +34,9 @@ export default function App(){
     </li>
   )
     var LocalValue = localStorage.setItem('key' , trackName)
-    console.log(localStorage.getItem('key'))
+    console.log(localStorage.getItem('key'));
+    console.log(localStorage.getItem('key'));
+    console.log(localStorage.getItem('key'));
 	return(
 	    <div className="App">
 	      <div className="tracker">
