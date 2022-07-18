@@ -1,50 +1,75 @@
 import '../index.css';
-import React from 'react';
+import React  from 'react';
 import AddTrack from './AddTrack.jsx'
-import {useState , useEffect} from 'react'
-
+import TrackerList from './TrackerList.jsx'
+import {useState} from 'react'
 
 export default function App(){
 	let date = new Date()
 	let month = date.getMonth() + 1
-	const [trackId, setTrackId] = useState(0)
-	const [tracks, setNewTracks] = useState([])	  
-	const [trackName , setTrackName] = useState(`${date.getDate()} / ${month.toString().padStart(2, '0')} / ${date.getFullYear()}`)
+	let defaultTrackName = `${date.getDate()}/${month.toString().padStart(2, '0')}/${date.getFullYear()}`
+	const [tracks, setNewTracks] = useState([])  
+	const [message , setMessage] = useState('') 
+	const [trackName , setTrackName] = useState(defaultTrackName)
+  const tracker = {
+	  value : <div>
+	         		<h4>{trackName}</h4>
+	        	</div>
+    }
+
 	function TrackName(e){
       	setTrackName(e.target.value)
       	if(!e.target.value){
-      		setTrackName(`${date.getDate()}/${month.toString().padStart(2, '0')}/${date.getFullYear()}`)
+      		setTrackName(defaultTrackName)
       	}
   	}
+
   function handleKeyDown(e){
   	if (e.key === 'Enter') {
-    setTrackId(trackId + 1)
-    setNewTracks([...tracks , track])
+		CreateNewTrack();
     e.target.value = ''
 	  if(!e.target.value){
-	      		setTrackName(`${date.getDate()}/${month.toString().padStart(2, '0')}/${date.getFullYear()}`)
+	      		setTrackName(defaultTrackName)
 	  }
 		}
   }
-  const track = {
-  id: trackId ,
-  value : 	<div>
-         		<h4>{trackName}</h4>
-        	</div>
-    }
-  function CreateNewTrack(){
-    setTrackId(trackId + 1)
-    setNewTracks([...tracks , track])
-  }
-    const TrackList = tracks.map((track)=>
-    <li key={track.id}>
-      {track.value}
-    </li>
-  )	
 
+  function updateMessage(message){
+  	setMessage(message , message)
+  }
+  function messageClear(){
+	  setMessage(message , '')
+	}
+
+  function CreateNewTrack(){
+    const newTracker = [...tracks , tracker]
+    setNewTracks(newTracker);
+    toLocal()
+  }
+  function RemoveTracker(index){
+  	const newTracker = [...tracks]
+  	newTracker.splice(index, 1)
+  	setNewTracks(newTracker)
+  	setMessage(message , '')
+  }
+
+  function toLocal(){
+  	// localStorage.setItem('key' , JSON.stringify(tracks))
+  }
+  const TrackList = tracks.map((tracker , index)=>
+  <TrackerList 
+  	key={index}  
+  	index={index} 
+  	updateMessage={updateMessage} 
+  	trackerValue = {tracker.value} 
+  	message={message} 
+  	RemoveTracker={RemoveTracker}
+  	messageClear={messageClear}
+  />
+  )	
 	return(
 	    <div className="App">
-	      <div className="tracker">
+	      <div className="TimeTracker">
 	        <h1>Tracker</h1>
 	        <AddTrack TrackName = {TrackName} CreateNewTrack={CreateNewTrack} handleKeyDown={handleKeyDown}/>
 	      </div>
