@@ -3,8 +3,9 @@ import React , {useState , useEffect}  from 'react';
 import RemoveMessage from './Message.js'
 
 export default function TrackerList(props){
+	var date = new Date()
 	const [message , setMessage] = useState('');
-	const[timeOn , setTimeOn] = useState(()=>{
+	const [timeOn , setTimeOn] = useState(()=>{
 		if(props.tracks[props.index]){
 			return props.tracks[props.index].timeOn
 		}else{
@@ -18,10 +19,34 @@ export default function TrackerList(props){
 			return 0
 		}
 	})
+	const[unloadTime , setUnloadTime] = useState(()=>{
+		if(props.tracks[props.index]){
+			return props.tracks[props.index].unloadTime
+		}else{
+			return 0
+		}
+	})
+	const[loadTime , setLoadTime] = useState(()=>{
+		if(props.tracks[props.index]){
+			return props.tracks[props.index].loadTime
+		}else{
+			return 0
+		}
+	})
+	document.addEventListener("DOMContentLoaded", () => {
+		alert("DOM готов!");
+	});
+	useEffect(()=>{
+		props.setNewTracks(prevState => {
+		const newState = [...prevState]
+		newState[props.index].loadTime = date.getTime();
+		return newState
+	})},[])
 	window.onbeforeunload = () => {
 		props.setNewTracks(prevState => {
 		const newState = [...prevState]
-		newState[props.index].time = time;
+			newState[props.index].time = time;
+			newState[props.index].unloadTime = date.getTime();
 		return newState
 		})
 	};

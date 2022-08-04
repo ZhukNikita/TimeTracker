@@ -98,3 +98,10 @@ li{
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 5px;
 }
+@media screen and (max-width: 500px){
+    .tracker{
+        width: 70vw;
+        font-size: 100%;
+    }
+
+}

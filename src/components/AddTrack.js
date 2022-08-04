@@ -2,8 +2,11 @@ import '../index.css';
 import {useState} from 'react'
 import React from 'react';
 
-function AddTrack({setTrackName , defaultTrackName , CreateNewTrack}) {
-  
+function AddTrack({CreateNewTrack , setTrackName}) {
+    var date = new Date()
+    var month = date.getMonth() + 1
+    var defaultTrackName = `${date.getDate()}/${month.toString().padStart(2, '0')}/${date.getFullYear()}`
+
     function TrackerName(e){
         setTrackName(e.target.value)
         if(!e.target.value){
